@@ -1,0 +1,78 @@
+package com.example.retaininstancestate
+
+import android.net.NetworkInfo
+import android.os.Bundle
+import android.os.PersistableBundle
+import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
+import android.view.View
+import com.example.retaininstancestate.mvp.Model
+import com.example.retaininstancestate.mvp.Presenter
+import com.example.retaininstancestate.mvp.UserList
+import com.example.retaininstancestate.recycler.UserItem
+import com.example.retaininstancestate.recycler.UserListRecyclerAdapter
+import kotlinx.android.synthetic.main.activity_main.*
+import java.io.Serializable
+
+class MainActivity : AppCompatActivity(), UserList.View {
+
+	private lateinit var presenter: UserList.Presenter
+	private lateinit var adapter: UserListRecyclerAdapter
+	private val DATA_SERIALIZABLE_KEY = "DATA"
+
+
+	override fun onCreate(savedInstanceState: Bundle?) {
+		super.onCreate(savedInstanceState)
+		setContentView(R.layout.activity_main)
+		this.adapter = UserListRecyclerAdapter(emptyList())
+		val userList = savedInstanceState?.get(DATA_SERIALIZABLE_KEY) as? List<UserItem>
+		val isFirstTime = userList != null
+		if (isFirstTime) {
+			this.presenter = Presenter(Model(UserList.Model.State(userList!!)))
+		} else {
+			this.presenter = Presenter()
+		}
+		initPresenter()
+		initRecyclerView()
+		if (!isFirstTime) {
+			this.presenter.onShouldUpdateList()
+		}
+	}
+
+	private fun initPresenter() {
+		this.presenter.setView(this)
+		this.presenter.onCreate()
+	}
+
+	override fun onDestroy() {
+		this.presenter.onDestroy()
+		super.onDestroy()
+	}
+
+	override fun onSaveInstanceState(outState: Bundle?) {
+		super.onSaveInstanceState(outState)
+		if (adapter.list.isNotEmpty()) {
+			outState?.putSerializable(
+					DATA_SERIALIZABLE_KEY, adapter.list as Serializable)
+		}
+	}
+
+	private fun initRecyclerView() {
+		this.rvItems.layoutManager = LinearLayoutManager(this)
+		this.rvItems.adapter = this.adapter
+	}
+
+	override fun showProgress() {
+		progressBar.visibility = View.VISIBLE
+	}
+
+	override fun hideProgress() {
+		progressBar.visibility = View.GONE
+	}
+
+	override fun showUserList(userList: List<UserItem>) {
+		this.adapter.setItems(userList)
+		this.adapter.notifyDataSetChanged()
+	}
+}
+
