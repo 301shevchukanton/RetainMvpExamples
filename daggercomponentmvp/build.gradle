@@ -1,12 +1,13 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
+
 android {
     compileSdkVersion 26
     buildToolsVersion "26.0.1"
 
     defaultConfig {
-        applicationId "com.example.antonshevchuk.retaininstancestate"
+        applicationId "com.example.antonshevchuk.daggercomponentmvp"
         minSdkVersion 15
         targetSdkVersion 26
         versionCode 1
@@ -20,8 +21,10 @@ android {
     }
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
+        main.java.srcDirs += [file("$buildDir/generated/source/kapt/main")]
     }
 }
+
 kapt {
     generateStubs = true
 }
@@ -33,11 +36,10 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
     compile "com.android.support:recyclerview-v7:$support_version"
     compile "com.android.support:design:$support_version"
-    provided 'javax.annotation:jsr250-api:1.0'
-
     kapt 'com.google.dagger:dagger-compiler:2.8'
     compile 'com.google.dagger:dagger:2.8'
-    compile 'org.glassfish:javax.annotation:10.0-b28'
+
+    provided 'javax.annotation:jsr250-api:1.0'
 }
 repositories {
     mavenCentral()

@@ -11,7 +11,8 @@ interface UserList {
     interface Model {
 
 	    class State(var userItems: List<UserItem> = emptyList(),
-	                var isInProgress: Boolean = false) : Serializable
+	                var isInProgress: Boolean = false,
+	                var shouldUpdate: Boolean = true) : Serializable
 
 	    fun loadList()
 	    fun setListener(listener: Listener?)
@@ -30,8 +31,7 @@ interface UserList {
     interface Presenter {
         fun setView(view: View)
         fun onCreate()
-        fun onDestroy()
+        fun onDestroy(isChangingConfigurations: Boolean)
         fun onShouldUpdateList()
     }
 }
-

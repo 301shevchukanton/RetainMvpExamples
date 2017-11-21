@@ -1,6 +1,8 @@
 package com.example.loadermvp
 
 import android.os.Bundle
+import android.support.v4.app.LoaderManager
+import android.support.v4.content.Loader
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -13,21 +15,22 @@ import com.example.loadermvp.recycler.UserListRecyclerAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : AppCompatActivity(), UserList.View, android.support.v4.app.LoaderManager.LoaderCallbacks<UserList.Presenter> {
+class MainActivity : AppCompatActivity(), UserList.View,
+		LoaderManager.LoaderCallbacks<UserList.Presenter> {
 	private val LOADER_ID = 101
 
 	private var presenter: UserList.Presenter?= null
 
 	private lateinit var adapter: UserListRecyclerAdapter
 
-	override fun onLoadFinished(loader: android.support.v4.content.Loader<UserList.Presenter>?, presenter: UserList.Presenter?) {
+	override fun onLoadFinished(loader: Loader<UserList.Presenter>?,
+	                            presenter: UserList.Presenter?) {
 		this.presenter = presenter
 	}
-
-	override fun onLoaderReset(loader: android.support.v4.content.Loader<UserList.Presenter>?) {
+	override fun onLoaderReset(loader: Loader<UserList.Presenter>?) {
 		this.presenter = null
 	}
-	override fun onCreateLoader(p0: Int, p1: Bundle?): android.support.v4.content.Loader<UserList.Presenter>? =
+	override fun onCreateLoader(p0: Int, p1: Bundle?): Loader<UserList.Presenter>? =
 			PresenterLoader<UserList.Presenter>(this, PresenterFactoryImpl())
 
 	override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +53,7 @@ class MainActivity : AppCompatActivity(), UserList.View, android.support.v4.app.
 	}
 
 	private fun initRecyclerView() {
-		this.rvItems.layoutManager = LinearLayoutManager(this) as RecyclerView.LayoutManager?
+		this.rvItems.layoutManager = LinearLayoutManager(this)
 		this.rvItems.adapter = this.adapter
 	}
 

@@ -48,11 +48,6 @@ class MainActivity : AppCompatActivity(), UserList.View {
 
 	override fun onDestroy() {
 		this.dataFragment?.data = this.presenter
-
-		//...
-
-
-
 		this.presenter?.onDestroy()
 		super.onDestroy()
 	}

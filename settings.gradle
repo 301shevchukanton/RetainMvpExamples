@@ -1,1 +1,1 @@
-include ':retainFragmentMvp', ':loadermvp', ':retainnonconfigurationinstancemvp', ':retaininstancestate'
+include ':retainFragmentMvp', ':loadermvp', ':retainnonconfigurationinstancemvp', ':retaininstancestate', ':daggercomponentmvp'
