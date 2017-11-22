@@ -45,10 +45,8 @@ class MainActivity : AppCompatActivity() {
 		})
 
 		userListViewModel().errorLiveData.observe(this, Observer {
-			if(it?.second != true) {
-				val oldState = userListViewModel().errorLiveData.value
-				userListViewModel().errorLiveData.value = Pair(oldState?.first, true)
-				Toast.makeText(this, it?.first?.message, Toast.LENGTH_LONG).show()
+			it?.handle {
+				Toast.makeText(this, it.message, Toast.LENGTH_LONG).show()
 				userListViewModel().loadList()
 			}
 		})

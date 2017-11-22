@@ -18,7 +18,7 @@ class UserListViewModel : ViewModel() {
 
 
 	val userListLiveData = MutableLiveData<State>()
-	val errorLiveData = MutableLiveData<Pair<Throwable?, Boolean>>()
+	val errorLiveData = MutableLiveData<ViewModelError<Throwable>>()
 
 	init {
 		this.userListLiveData.value = State(emptyList(), true)
@@ -26,8 +26,8 @@ class UserListViewModel : ViewModel() {
 
 	fun loadList() {
 		userListLiveData.value = State(emptyList(), true)
-		val i = Random().nextInt() % 5
-		if (i == 3) {
+		val i = Random().nextInt() % 4
+		if (i == 1) {
 			loadData()
 		} else {
 			loadError()
@@ -55,8 +55,8 @@ class UserListViewModel : ViewModel() {
 				return Throwable("Error loading")
 			}
 
-			override fun onPostExecute(result: Throwable?) {
-				errorLiveData.value = Pair(result, false)
+			override fun onPostExecute(result: Throwable) {
+				errorLiveData.value = ViewModelError<Throwable>(result)
 			}
 		}.execute()
 	}
