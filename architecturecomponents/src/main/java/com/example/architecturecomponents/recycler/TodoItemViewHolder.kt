@@ -1,6 +1,7 @@
 package com.example.recycler
 
 import android.R.id.text1
+import android.arch.lifecycle.MutableLiveData
 import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.TextView
@@ -15,10 +16,10 @@ class TodoItemViewHolder(view: View) : RecyclerView.ViewHolder(view) {
     private val rootView: View = view
     private lateinit var userItem: UserItem
 
-    fun bind(recyclerViewItemClickListener: RecyclerViewItemClickListener, userItem: UserItem) {
+    fun bind(userItemLiveData: MutableLiveData<UserItem>, userItem: UserItem) {
         this.userItem = userItem
         this.rootView.setOnClickListener {
-            recyclerViewItemClickListener.onItemClick(userItem)
+	        userItemLiveData.value = userItem
         }
     }
 }

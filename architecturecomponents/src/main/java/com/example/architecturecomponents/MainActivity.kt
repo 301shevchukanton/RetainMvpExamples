@@ -20,6 +20,11 @@ class MainActivity : AppCompatActivity() {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
 		this.adapter = UserListRecyclerAdapter(emptyList())
+		this.adapter
+				.itemClick
+				.observe(this, Observer {
+					Toast.makeText(this, it?.userName, Toast.LENGTH_LONG).show()
+				})
 		subscribeOnViewModelChanges()
 		initRecyclerView()
 		if (userListViewModel().userListLiveData.value?.userItems?.isEmpty() ?: true) {
