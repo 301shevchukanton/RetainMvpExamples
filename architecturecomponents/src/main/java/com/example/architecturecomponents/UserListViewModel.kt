@@ -5,6 +5,7 @@ import android.arch.lifecycle.ViewModel
 import android.os.AsyncTask
 import com.example.architecturecomponents.recycler.UserItem
 import java.io.Serializable
+import java.util.*
 
 /**
  * Created by AntonShevchuk on 22.11.2017.
@@ -17,6 +18,7 @@ class UserListViewModel : ViewModel() {
 
 
 	val userListLiveData = MutableLiveData<State>()
+	val errorLiveData = MutableLiveData<Throwable>()
 
 	init {
 		this.userListLiveData.value = State(emptyList(), true)
@@ -24,6 +26,15 @@ class UserListViewModel : ViewModel() {
 
 	fun loadList() {
 		userListLiveData.value = State(emptyList(), true)
+		val i = Random().nextInt() % 5
+		if (i == 3) {
+			loadData()
+		} else {
+			loadError()
+		}
+	}
+
+	private fun loadData() {
 		object : AsyncTask<Void, Void, List<String>>() {
 			override fun doInBackground(vararg params: Void?): List<String> {
 				Thread.sleep(5000)
@@ -33,6 +44,19 @@ class UserListViewModel : ViewModel() {
 			override fun onPostExecute(result: List<String>?) {
 				val list = result?.map { UserItem(it) }?.toList() ?: emptyList()
 				userListLiveData.value = State(list, false)
+			}
+		}.execute()
+	}
+
+	private fun loadError() {
+		object : AsyncTask<Void, Void, Throwable>() {
+			override fun doInBackground(vararg params: Void?): Throwable {
+				Thread.sleep(2000)
+				return Throwable("Error loading")
+			}
+
+			override fun onPostExecute(result: Throwable?) {
+				errorLiveData.value = result
 			}
 		}.execute()
 	}

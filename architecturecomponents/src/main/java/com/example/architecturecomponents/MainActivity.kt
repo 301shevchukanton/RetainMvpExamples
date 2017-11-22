@@ -1,36 +1,36 @@
 package com.example.architecturecomponents
 
-import android.arch.lifecycle.LifecycleOwner
 import android.arch.lifecycle.Observer
 import android.arch.lifecycle.ViewModelProviders
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
+import android.widget.Toast
 import com.example.architecturecomponents.recycler.UserItem
 import com.example.architecturecomponents.recycler.UserListRecyclerAdapter
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), LifecycleOwner {
+class MainActivity : AppCompatActivity() {
 
 	private lateinit var adapter: UserListRecyclerAdapter
 	private val viewModelClass = UserListViewModel::class.java
-	private var viewModel: UserListViewModel? = null
 
 	override fun onCreate(savedInstanceState: Bundle?) {
 		super.onCreate(savedInstanceState)
 		setContentView(R.layout.activity_main)
 		this.adapter = UserListRecyclerAdapter(emptyList())
-		this.viewModel = ViewModelProviders.of(this).get(viewModelClass)
 		subscribeOnViewModelChanges()
 		initRecyclerView()
-		if (this.viewModel?.userListLiveData?.value?.userItems?.isEmpty() ?:true) {
-			this.viewModel?.loadList()
+		if (userListViewModel().userListLiveData.value?.userItems?.isEmpty() ?: true) {
+			userListViewModel().loadList()
 		}
 	}
 
+	private fun userListViewModel() = ViewModelProviders.of(this).get(viewModelClass)
+
 	private fun subscribeOnViewModelChanges() {
-		this.viewModel?.userListLiveData?.observe(this, Observer {
+		userListViewModel().userListLiveData.observe(this, Observer {
 			showUserList(it?.userItems ?: emptyList())
 			if (it?.isInProgress == true) {
 				showProgress()
@@ -38,10 +38,14 @@ class MainActivity : AppCompatActivity(), LifecycleOwner {
 				hideProgress()
 			}
 		})
+		userListViewModel().errorLiveData.observe(this, Observer {
+			Toast.makeText(this, it?.message, Toast.LENGTH_LONG).show()
+			userListViewModel().loadList()
+		})
 	}
 
 	override fun onDestroy() {
-		this.viewModel?.userListLiveData?.removeObservers(this)
+		userListViewModel().userListLiveData.removeObservers(this)
 		super.onDestroy()
 	}
 
