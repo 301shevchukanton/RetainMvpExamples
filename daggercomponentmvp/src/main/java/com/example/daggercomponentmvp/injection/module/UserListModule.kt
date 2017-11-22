@@ -1,7 +1,7 @@
 package com.example.daggercomponentmvp.injection.module
 
-import com.example.retaininstancestate.mvp.Model
-import com.example.retaininstancestate.mvp.UserList
+import com.example.daggercomponentmvp.mvp.Model
+import com.example.daggercomponentmvp.mvp.UserList
 import dagger.Module
 import dagger.Provides
 
@@ -9,5 +9,5 @@ import dagger.Provides
 class UserListModule {
 	@com.example.daggercomponentmvp.injection.scope.UserList
 	@Provides
-	fun userListModel():UserList.Model = Model(UserList.Model.State())
+	fun userListModel(): UserList.Model = Model(UserList.Model.State())
 }

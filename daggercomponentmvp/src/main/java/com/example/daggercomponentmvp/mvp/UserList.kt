@@ -1,4 +1,4 @@
-package com.example.retaininstancestate.mvp
+package com.example.daggercomponentmvp.mvp
 
 import com.example.retaininstancestate.recycler.UserItem
 import java.io.Serializable

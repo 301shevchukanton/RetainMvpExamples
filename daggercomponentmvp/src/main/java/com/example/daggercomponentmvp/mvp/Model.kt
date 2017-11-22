@@ -1,4 +1,4 @@
-package com.example.retaininstancestate.mvp
+package com.example.daggercomponentmvp.mvp
 
 import android.os.AsyncTask
 import com.example.retaininstancestate.recycler.UserItem

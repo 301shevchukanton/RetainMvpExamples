@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.view.View
-import com.example.retaininstancestate.mvp.Presenter
-import com.example.retaininstancestate.mvp.UserList
+import com.example.daggercomponentmvp.mvp.Presenter
+import com.example.daggercomponentmvp.mvp.UserList
 import com.example.retaininstancestate.recycler.UserItem
 import com.example.retaininstancestate.recycler.UserListRecyclerAdapter
 import kotlinx.android.synthetic.main.activity_main.*
