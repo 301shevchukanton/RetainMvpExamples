@@ -16,7 +16,6 @@ class UserListViewModel : ViewModel() {
 	class State(var userItems: List<UserItem> = emptyList(),
 	            var isInProgress: Boolean = false) : Serializable
 
-
 	val userListLiveData = MutableLiveData<State>()
 	val errorLiveData = MutableLiveData<ViewModelError<Throwable>>()
 
@@ -28,9 +27,9 @@ class UserListViewModel : ViewModel() {
 		userListLiveData.value = State(emptyList(), true)
 		val i = Random().nextInt() % 4
 		if (i == 1) {
-			loadData()
+			loadData() //load data and push it to userListLiveData
 		} else {
-			loadError()
+			loadError() //simulate load data error and push error to errorLiveData
 		}
 	}
 

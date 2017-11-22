@@ -35,14 +35,18 @@ class MainActivity : AppCompatActivity() {
 	private fun userListViewModel() = ViewModelProviders.of(this).get(viewModelClass)
 
 	private fun subscribeOnViewModelChanges() {
-		userListViewModel().userListLiveData.observe(this, Observer {
-			showUserList(it?.userItems ?: emptyList())
-			if (it?.isInProgress == true) {
-				showProgress()
-			} else {
-				hideProgress()
-			}
-		})
+
+		userListViewModel()
+				.userListLiveData
+				.observe(this,
+						Observer {
+							showUserList(it?.userItems ?: emptyList())
+							if (it?.isInProgress == true) {
+								showProgress()
+							} else {
+								hideProgress()
+							}
+						})
 
 		userListViewModel().errorLiveData.observe(this, Observer {
 			it?.handle {
