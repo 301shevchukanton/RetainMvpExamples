@@ -27,7 +27,7 @@ class MainActivity : AppCompatActivity() {
 				})
 		subscribeOnViewModelChanges()
 		initRecyclerView()
-		if (userListViewModel().userListLiveData.value?.userItems?.isEmpty() ?: true) {
+		if (userListViewModel().userListLiveData.value?.userItems?.isEmpty() != false) {
 			userListViewModel().loadList()
 		}
 	}
@@ -43,9 +43,14 @@ class MainActivity : AppCompatActivity() {
 				hideProgress()
 			}
 		})
+
 		userListViewModel().errorLiveData.observe(this, Observer {
-			Toast.makeText(this, it?.message, Toast.LENGTH_LONG).show()
-			userListViewModel().loadList()
+			if(it?.second != true) {
+				val oldState = userListViewModel().errorLiveData.value
+				userListViewModel().errorLiveData.value = Pair(oldState?.first, true)
+				Toast.makeText(this, it?.first?.message, Toast.LENGTH_LONG).show()
+				userListViewModel().loadList()
+			}
 		})
 	}
 

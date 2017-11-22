@@ -18,7 +18,7 @@ class UserListViewModel : ViewModel() {
 
 
 	val userListLiveData = MutableLiveData<State>()
-	val errorLiveData = MutableLiveData<Throwable>()
+	val errorLiveData = MutableLiveData<Pair<Throwable?, Boolean>>()
 
 	init {
 		this.userListLiveData.value = State(emptyList(), true)
@@ -56,7 +56,7 @@ class UserListViewModel : ViewModel() {
 			}
 
 			override fun onPostExecute(result: Throwable?) {
-				errorLiveData.value = result
+				errorLiveData.value = Pair(result, false)
 			}
 		}.execute()
 	}
