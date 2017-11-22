@@ -13,18 +13,17 @@ import java.io.Serializable
 class UserListViewModel : ViewModel() {
 
 	class State(var userItems: List<UserItem> = emptyList(),
-	            var isInProgress: Boolean = false,
-	            var shouldUpdate: Boolean = true) : Serializable
+	            var isInProgress: Boolean = false) : Serializable
 
 
 	val userListLiveData = MutableLiveData<State>()
 
 	init {
-		this.userListLiveData.value = State(emptyList(), true, false)
+		this.userListLiveData.value = State(emptyList(), true)
 	}
 
 	fun loadList() {
-		userListLiveData.value = State(emptyList(), true, false)
+		userListLiveData.value = State(emptyList(), true)
 		object : AsyncTask<Void, Void, List<String>>() {
 			override fun doInBackground(vararg params: Void?): List<String> {
 				Thread.sleep(5000)
@@ -33,7 +32,7 @@ class UserListViewModel : ViewModel() {
 
 			override fun onPostExecute(result: List<String>?) {
 				val list = result?.map { UserItem(it) }?.toList() ?: emptyList()
-				userListLiveData.value = State(list, false, false)
+				userListLiveData.value = State(list, false)
 			}
 		}.execute()
 	}
