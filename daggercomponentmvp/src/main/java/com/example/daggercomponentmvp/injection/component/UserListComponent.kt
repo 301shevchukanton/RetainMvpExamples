@@ -9,7 +9,7 @@ import dagger.Subcomponent
 @Subcomponent(modules = arrayOf(UserListModule::class))
 interface UserListComponent {
 
-	fun inject(activity: Presenter)
+	fun inject(presenter: Presenter)
 
 	fun userListModel(): UserList.Model
 }
